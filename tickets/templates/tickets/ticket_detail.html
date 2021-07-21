@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'tickets:all-tickets' %}">Go back to all tickets</a>
+<hr />
+<h1>Detailed view of the ticked called {{ ticket.name }}</h1>
+<p>{{ ticket.employee }} - {{ ticket.details }}</p>
+<p>Ticket assigned for {{ ticket.employee }}</p>
+<hr />
+<a href="{% url 'tickets:ticket_update' ticket.pk %}">UPDATE</a>
+<a href="{% url 'tickets:ticket_delete' ticket.pk %}">DELETE</a>
+{% endblock content %}

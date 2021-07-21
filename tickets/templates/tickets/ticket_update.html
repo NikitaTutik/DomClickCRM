@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'tickets:ticket_details' ticket.pk %}">Go back to {{ ticket.name }}</a>
+<hr />
+<h1>Update ticket: {{ ticket.name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}
