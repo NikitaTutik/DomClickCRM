@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url "employees:employee-create" %}">Create a new employee</a>
+    <hr />
+<h1>All employees</h1>
+    {% for employee in object_list %}
+        <p><a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee }}</a> </p>
+    {% endfor %}
+{% endblock content %}

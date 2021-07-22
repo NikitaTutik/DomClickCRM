@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url '#' %}">Go back to all employees</a>
+<hr />
+<h1>Detailed view of the employee {{  employee.user.username }}</h1>
+<form method="post">
+{% csrf_token %}
+{{ form.as.p }}
+<button type="submit">Submit</button>
+</form>
+<hr />
+<a href="{% url '#' employee.pk %}">UPDATE</a>
+<a href="{% url '#' employee.pk %}">DELETE</a>
+{% endblock content %}

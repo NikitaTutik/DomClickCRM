@@ -1,9 +1,18 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    is_manager = models.BooleanField(default=True)
+    is_supermanager = models.BooleanField(default=False)
+
+
+class ProfileModel(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
+
+    def __str__(self):
+        return self.user.username
 
 
 class Ticket(models.Model):
@@ -11,7 +20,9 @@ class Ticket(models.Model):
     details = models.CharField(max_length=1000)
     category = models.CharField(max_length=10)
     urgent = models.BooleanField(default=False)
-    employee = models.ForeignKey("Employee", on_delete=models.CASCADE)
+    company = models.ForeignKey(ProfileModel,null=True, blank=True, on_delete=models.CASCADE)
+    employee = models.ForeignKey("Employee", null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey("Category",null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
@@ -19,9 +30,27 @@ class Ticket(models.Model):
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    company = models.ForeignKey(ProfileModel, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.email
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
+
+
+def post_user_signal(sender, instance, created, **kwargs):
+    if created:
+        ProfileModel.objects.create(user=instance)
+
+
+post_save.connect(post_user_signal, sender=User)
+
+
 
 
 

@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if request.user.is_supermanager %}
 <a href="{% url 'tickets:ticket_create' %}">Create a new ticket</a>
+    {% endif %}
 <hr/>
 {% for ticket in tickets %}
     <div class="ticket">
-       <a href="{% url 'tickets:ticket_details' ticket.pk %}"> Ticket name - {{ ticket.name }} </a>Employee - {{ ticket.employee }} Ugrent: {{ ticket.urgent }}
+        <a href="{% url 'tickets:ticket_details' ticket.pk %}"> <b>Ticket name</b> - {{ ticket.name }} </a><b>Employee</b> - {{ ticket.employee }} <b>Ugrent:</b> {{ ticket.urgent }}
+        <b>Category</b> - {{ ticket.category }}
     </div>
 {% endfor %}
+    <br>
+    {% if unassigned_tickets.exists %}
+        {% for ticket in unassigned_tickets %}
+            <h2>Unassigned tickets</h2>
+            <div class="ticket">
+               <a href="{% url 'tickets:ticket_details' ticket.pk %}"> <b>Ticket name</b>  - {{ ticket.name }} </a><b>Ugrent:</b> {{ ticket.urgent }}
+               <b>Category</b> - {{ ticket.category }}
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock content %}
