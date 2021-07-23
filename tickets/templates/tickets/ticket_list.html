@@ -1,23 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if request.user.is_supermanager %}
-<a href="{% url 'tickets:ticket_create' %}">Create a new ticket</a>
+<a href="{% url 'tickets:ticket_create' %}">
+    <button type="button" class="btn btn-primary">New Ticket</button>
+</a>
+
     {% endif %}
+    <form method="get">
+        {{ filter.form }}
+    <button type="submit">Search</button>
+    </form>
 <hr/>
-{% for ticket in tickets %}
+
+{% for ticket in tickets.qs %}
     <div class="ticket">
-        <a href="{% url 'tickets:ticket_details' ticket.pk %}"> <b>Ticket name</b> - {{ ticket.name }} </a><b>Employee</b> - {{ ticket.employee }} <b>Ugrent:</b> {{ ticket.urgent }}
-        <b>Category</b> - {{ ticket.category }}
+            <b>Ticket name</b> - {{ ticket.name }} </a>
+            <b>Employee</b> - {{ ticket.employee }}
+            <b>Ugrent</b> - {{ ticket.urgent }}
+            <b>Category</b> - {{ ticket.category }}
+            <b>Date</b> - {{ ticket.date }}
+            <b>Status:</b> - {{ ticket.status }}
+        <a href="{% url 'tickets:ticket_details' ticket.pk %}">Details</a>
     </div>
 {% endfor %}
     <br>
-    {% if unassigned_tickets.exists %}
-        {% for ticket in unassigned_tickets %}
-            <h2>Unassigned tickets</h2>
-            <div class="ticket">
-               <a href="{% url 'tickets:ticket_details' ticket.pk %}"> <b>Ticket name</b>  - {{ ticket.name }} </a><b>Ugrent:</b> {{ ticket.urgent }}
-               <b>Category</b> - {{ ticket.category }}
-            </div>
-        {% endfor %}
-    {% endif %}
+{% if unassigned_tickets.exists %}
+    <h2>Unassigned tickets</h2>
+    {% for ticket in filter.qs %}
+        <div class="ticket">
+           <a href="{% url 'tickets:ticket_details' ticket.pk %}">
+               <b>Ticket name</b>  - {{ ticket.name }} </a>
+                <b>Ugrent </b> - {{ ticket.urgent }}
+                <b>Category</b> - {{ ticket.category }}
+                <b>Date</b> - {{ ticket.date }}
+                <b>Status</b> - {{ ticket.status }}
+                <a href="{% url 'tickets:ticket_details' ticket.pk %}">Details</a>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock content %}

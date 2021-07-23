@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tickets',
-    'employees'
+    'employees',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

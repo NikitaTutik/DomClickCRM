@@ -6,6 +6,7 @@ from .models import Ticket
 User = get_user_model()
 
 class TicketForm(forms.ModelForm):
+
     class Meta:
         model = Ticket
         fields = (
@@ -13,7 +14,8 @@ class TicketForm(forms.ModelForm):
             'details',
             'category',
             'urgent',
-            'employee'
+            'employee',
+            'status'
         )
 
 

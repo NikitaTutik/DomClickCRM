@@ -17,12 +17,13 @@ class ProfileModel(models.Model):
 
 class Ticket(models.Model):
     name = models.CharField(max_length=256)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
     details = models.CharField(max_length=1000)
-    category = models.CharField(max_length=10)
     urgent = models.BooleanField(default=False)
     company = models.ForeignKey(ProfileModel,null=True, blank=True, on_delete=models.CASCADE)
     employee = models.ForeignKey("Employee", null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey("Category",null=True, blank=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey("Status", null=True, blank=True, on_delete=models.SET_NULL, default="Open")
 
     def __str__(self):
         return self.name
@@ -37,6 +38,13 @@ class Employee(models.Model):
 
 
 class Category(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
+
+
+class Status(models.Model):
     name = models.CharField(max_length=25)
 
     def __str__(self):

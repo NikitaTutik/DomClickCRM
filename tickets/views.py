@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Ticket, Employee
 from .forms import TicketForm, UserRegisterForm
+from .filters import TicketFilter
 
 
 class SignUpView(CreateView):
@@ -20,6 +21,7 @@ class WelcomePageView(TemplateView):
 
 
 class TicketListView(LoginRequiredMixin, ListView):
+    model = Ticket
     template_name = 'tickets/ticket_list.html'
     context_object_name = 'tickets'
 
@@ -34,9 +36,12 @@ class TicketListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TicketListView, self).get_context_data(**kwargs)
         if self.request.user.is_manager:
-            queryset = Ticket.objects.filter(employee__isnull=True)
+            querysetAssigned = Ticket.objects.filter(employee__isnull=False)
+            querysetUnassigned = Ticket.objects.filter(employee__isnull=True)
+            context['tickets'] = TicketFilter(self.request.GET, queryset=querysetAssigned)
+            context['filter'] = TicketFilter(self.request.GET, queryset=querysetUnassigned)
             context.update({
-                "unassigned_tickets":queryset
+                "unassigned_tickets" : self.get_queryset()
             })
         return context
 

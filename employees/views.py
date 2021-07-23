@@ -12,7 +12,7 @@ class EmployeeView(ManagerAndLoginReqMixin, generic.ListView):
 
     def get_queryset(self):
         company = self.request.user.employee.company
-        return Employee.objects.filter(company=company)
+        return Employee.objects.all()
 
 
 class EmployeeCreateView(ManagerAndLoginReqMixin, generic.CreateView):
@@ -24,7 +24,7 @@ class EmployeeCreateView(ManagerAndLoginReqMixin, generic.CreateView):
 
     def form_valid(self, form):
         employee = form.save(commit=False)
-        employee.company = self.request.user.employee.company
+        employee.company = self.request.user.userprofile
         employee.save()
         return super(EmployeeCreateView, self).form_valid(form)
 
@@ -34,7 +34,8 @@ class EmployeeDetail(ManagerAndLoginReqMixin, generic.DetailView):
     context_object_name = 'employee'
 
     def get_queryset(self):
-        return reverse("employees:employees")
+        company = self.request.user.userprofile
+        return Employee.objects.filter(company=company)
 
 
 class EmployeeUpdate(ManagerAndLoginReqMixin, generic.UpdateView):
@@ -43,6 +44,11 @@ class EmployeeUpdate(ManagerAndLoginReqMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse("employees:employees")
+
+    def get_queryset(self):
+        company = self.request.user.userprofile
+        return Employee.objects.filter(company=company)
+
 
 
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<a href="{% url 'tickets:ticket_details' ticket.pk %}">Go back to {{ user.username }}</a>
+<a href="{% url 'employees:employee_detail' employee.pk %}">Go back to {{ user.username }}</a>
 <hr />
 <h1>Update Employee: {{ employee.name }}</h1>
 <form method="post">
