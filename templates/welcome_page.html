@@ -11,7 +11,7 @@
 <body>
 
     <div class="card text-center" style="width: 18rem; margin-top: 250px; margin-left: 540px">
-      <img src="..." class="card-img-top" alt="...">
+      <img src="static/domclick-logo.svg" class="card-img-top" alt="...">
       <div class="card-body text-center">
         <h5 class="card-title"> DomClick CRM</h5>
         <p class="card-text">Start managing tickets!</p>
@@ -19,6 +19,8 @@
               <a href="{% url "login" %}" class="btn btn-primary ">Login</a>
               OR
               <a href="{% url "signup" %}" class="btn btn-primary ">SignUp</a>
+              <br>
+              If you're already logged in click - <a href="{% url "tickets:all-tickets" %}" class="btn btn-primary ">HERE</a>
           </div>
 
       </div>

@@ -1,10 +1,10 @@
-from django.shortcuts import render
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import reverse
+from django.contrib.auth.decorators import login_required
 from tickets.models import Employee
 from .forms import EmployeeForm
 from .mixins import ManagerAndLoginReqMixin
+from tickets.models import Ticket
 
 
 class EmployeeView(ManagerAndLoginReqMixin, generic.ListView):
@@ -36,6 +36,15 @@ class EmployeeDetail(ManagerAndLoginReqMixin, generic.DetailView):
     def get_queryset(self):
         company = self.request.user.userprofile
         return Employee.objects.filter(company=company)
+
+
+class EmployeeTickets(ManagerAndLoginReqMixin, generic.ListView):
+    template_name = "employees/employee_tickets.html"
+    model = Ticket
+    context_object_name = 'emtickets'
+
+    def get_queryset(self):
+        return Ticket.objects.filter(employee__user=self.request.user)
 
 
 class EmployeeUpdate(ManagerAndLoginReqMixin, generic.UpdateView):
