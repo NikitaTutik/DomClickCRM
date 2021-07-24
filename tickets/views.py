@@ -1,11 +1,11 @@
 from django.shortcuts import reverse
 from django.core.mail import send_mail
-from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Ticket, Employee
 from .forms import TicketForm, UserRegisterForm
 from .filters import TicketFilter
+from .bot import send_msg
 
 
 class SignUpView(CreateView):
@@ -75,6 +75,16 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
     form_class = TicketForm
 
     def get_success_url(self):
+        emp = self.request.POST['employee']
+        if self.request.POST['status'] == "1":
+            send_msg(f"{self.request.POST['name']} status has been changed to OPEN. "
+                     f"Employee - {Employee.objects.get(id=emp)}")
+        elif self.request.POST['status'] == "2":
+            send_msg(f"{self.request.POST['name']} status has been changed to CLOSED."
+                     f"Employee - {Employee.objects.get(id=emp)}")
+        elif self.request.POST['status'] == "3":
+            send_msg(f"{self.request.POST['name']} status has been changed to PAUSED. "
+                     f"Employee - {Employee.objects.get(id=emp)}")
         return reverse('tickets:all-tickets')
 
 
@@ -85,6 +95,3 @@ class TicketDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse('tickets:all-tickets')
-
-
-

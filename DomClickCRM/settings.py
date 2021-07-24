@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -126,4 +127,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = '/tickets'
 
 LOGIN_URL = "/login"
+
+BOT_API_KEY = os.environ.get('CRM_BOT_TOKEN')
+
+BOT_CHAT_ID = os.environ.get('CRM_CHAT_ID')
 

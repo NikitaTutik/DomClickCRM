@@ -5,6 +5,7 @@ from .models import Ticket
 
 User = get_user_model()
 
+
 class TicketForm(forms.ModelForm):
 
     class Meta:

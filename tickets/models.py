@@ -23,7 +23,7 @@ class Ticket(models.Model):
     company = models.ForeignKey(ProfileModel,null=True, blank=True, on_delete=models.CASCADE)
     employee = models.ForeignKey("Employee", null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey("Category",null=True, blank=True, on_delete=models.SET_NULL)
-    status = models.ForeignKey("Status", null=True, blank=True, on_delete=models.SET_NULL, default="Open")
+    status = models.ForeignKey("Status", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
